@@ -27,17 +27,23 @@ let cart = [];
 const grid = document.querySelector('#product-grid');
 
 function renderProducts() {
-  grid.innerHTML = products.map((product, index) => `
-    <article class="product-card reveal">
+  const count = document.querySelector('.collection-count');
+  if (count) count.textContent = `${products.length} modèles disponibles`;
+  grid.innerHTML = products.map(product => `
+    <a class="product-card reveal" href="${productOrderLink(product)}" target="_blank" rel="noreferrer" aria-label="Commander ${product.name} sur WhatsApp">
       <div class="product-image">
         ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
         <img src="assets/${product.image}" alt="${product.name}" loading="lazy">
-        <button class="quick-add" aria-label="Ajouter ${product.name}" data-add="${index}">+</button>
+        <span class="quick-add" aria-hidden="true">↗</span>
       </div>
-      <div class="product-info"><h3>${product.name}</h3><p>${product.type}</p><span class="product-arrow">↗</span></div>
-    </article>`).join('');
-  grid.querySelectorAll('[data-add]').forEach(button => button.addEventListener('click', () => addToCart(Number(button.dataset.add))));
+      <div class="product-info"><h3>${product.name}</h3><p>${product.type}</p><span class="product-arrow">Commander ↗</span></div>
+    </a>`).join('');
   observeReveals();
+}
+
+function productOrderLink(product) {
+  const message = `Bonjour Puir-kèta Fashion, je souhaite commander ${product.name} (${product.type}). Est-il disponible ?`;
+  return `https://wa.me/22654592853?text=${encodeURIComponent(message)}`;
 }
 
 function addToCart(index) {
@@ -77,7 +83,7 @@ heroVisual.addEventListener('pointerleave', () => {
   heroVisual.style.setProperty('--tilt-x', '0');
   heroVisual.style.setProperty('--tilt-y', '0');
 });
-document.querySelector('.header-whatsapp').addEventListener('click', event => { event.preventDefault(); drawer.classList.add('open'); document.querySelector('#drawer-overlay').classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); });
+// Le bouton WhatsApp général ouvre directement la conversation du commerçant.
 document.querySelector('.close-cart').addEventListener('click', closeCart);
 document.querySelector('#drawer-overlay').addEventListener('click', closeCart);
 function closeCart() { drawer.classList.remove('open'); document.querySelector('#drawer-overlay').classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); }
