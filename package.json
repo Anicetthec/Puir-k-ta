@@ -1,0 +1,17 @@
+{
+  "name": "puir-keta-fashion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Boutique Puir-kèta Fashion — application web progressive",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

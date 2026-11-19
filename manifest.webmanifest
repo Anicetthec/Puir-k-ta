@@ -1,0 +1,20 @@
+{
+  "name": "Puir-kèta Fashion",
+  "short_name": "Puir-kèta",
+  "description": "Chaussures tendance, commande rapide sur WhatsApp.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f2ea",
+  "theme_color": "#17201d",
+  "icons": [
+    {
+      "src": "/assets/logo.jpeg",
+      "sizes": "640x640",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
