@@ -1,4 +1,4 @@
-const CACHE_NAME = 'puir-keta-fashion-v3';
+const CACHE_NAME = 'puir-keta-fashion-v4';
 const APP_SHELL = [
   '/',
   '/index.html',
@@ -49,6 +49,20 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+
+  // For page navigation, prefer the latest page from the server. A cached
+  // homepage must never be returned in place of a requested inner page.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(fetch(event.request).then(response => {
+      if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+      }
+      return response;
+    }).catch(() => caches.match(event.request).then(cached => cached || Response.error())));
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
       if (new URL(event.request.url).origin === self.location.origin) {
@@ -56,6 +70,6 @@ self.addEventListener('fetch', event => {
         caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
       }
       return response;
-    }).catch(() => caches.match('/index.html')))
+    }).catch(() => Response.error()))
   );
 });
